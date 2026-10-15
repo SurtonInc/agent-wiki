@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Add the deployment flag `WIKI_CONVERSATIONS=0` for article-only wikis. Hide
+  conversation navigation/search and evidence tools, block original evidence
+  routes, and skip server evidence access while preserving stored archives,
+  published citations and separately published article media. Unset retains the
+  existing enabled behavior; restart to apply changes.
+
 - Add client-neutral shared-memory instructions and explain how to include them
   in an agent's global or project guidance after connecting to the wiki.
 

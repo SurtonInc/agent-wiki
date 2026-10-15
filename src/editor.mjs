@@ -1,4 +1,5 @@
 // @ts-check
+import { conversationsEnabled } from "./features.mjs";
 import { AgentStore } from "./agent-store.mjs";
 import { ControlStore, digest } from "./control-store.mjs";
 import { validateEvidence, verifyDraftEvidence } from "./evidence-quotes.mjs";
@@ -307,7 +308,7 @@ if (
               draft?.operation_id,
             ),
           },
-          process.env.WIKI_EVIDENCE_URL,
+          conversationsEnabled() ? process.env.WIKI_EVIDENCE_URL : null,
         );
         const publish = (commit) => {
           const checked = () => {

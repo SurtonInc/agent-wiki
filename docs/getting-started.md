@@ -189,6 +189,7 @@ export PORT=4317
 export WIKI_LOCAL_LOGIN=1
 export WIKI_WRITE=0 WIKI_PUSH=0 WIKI_DATABASE=:memory:
 export WIKI_TRACES= WIKI_EVIDENCE_URL=
+export WIKI_CONVERSATIONS=0
 unset WIKI_GOOGLE_CLIENT_ID WIKI_GOOGLE_CLIENT_SECRET
 unset WIKI_OIDC_ISSUER WIKI_OIDC_CLIENT_ID WIKI_OIDC_CLIENT_SECRET
 node scripts/local-account.mjs bootstrap manager@example.org 'Initial manager'
@@ -201,6 +202,9 @@ an initial password of at least 15 characters. Keep the URL out of shared logs
 and Git. Bootstrap is for an empty control store; do not rerun it at every start.
 Read **Welcome** in the browser after account setup. A fresh signed-out browser
 must see sign-in rather than the article.
+
+This setup disables optional Conversations. Set `WIKI_CONVERSATIONS=1` and
+configure an archive when needed; see [conversation settings](traces.md#enable-or-disable-conversations).
 
 To enable editing, restart the server with `WIKI_WRITE=1`; manager/editor grants
 are still required. Content changes are committed locally, and `WIKI_PUSH=0`

@@ -477,3 +477,25 @@ test(
     }
   },
 );
+
+test("disabled conversations remove evidence tools from regular MCP and reject stale calls", async (t) => {
+  const backend = await evidenceFixture();
+  t.after(() => backend.close());
+  const { client, call } = await setup(t, false, {
+    conversations: false,
+    evidenceUrl: backend.url,
+  });
+  const { tools } = await client.listTools();
+  assert.ok(tools.some((tool) => tool.name === "wiki.read"));
+  assert.ok(
+    !tools.some(
+      (tool) => tool.name.startsWith("wiki.trace") || tool.name === "wiki.file",
+    ),
+  );
+  const { value } = await call("wiki.read", { id: "guide" });
+  assert.equal(value.title, "Guide");
+  await assert.rejects(() =>
+    client.callTool({ name: "wiki.trace", arguments: { id: evidenceId } }),
+  );
+  assert.deepEqual(backend.state.requests, []);
+});

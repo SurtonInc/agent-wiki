@@ -1,3 +1,4 @@
+import { conversationsEnabled } from "./features.mjs";
 import { openAPI } from "./api-contract.mjs";
 import { permits, evidencePath } from "./authorization.mjs";
 import { RemoteAgents, readOAuthForm } from "./remote-agents.mjs";
@@ -49,7 +50,7 @@ import { GitWiki, wikiRepo } from "./git-wiki.mjs";
 import { WikiSearch } from "./wiki-search.mjs";
 import { ArticleCitations } from "./article-citations.mjs";
 import { articleReadOptions, selectArticle } from "./article-read.mjs";
-import { article, link, list, shell } from "./render.mjs";
+import { article, link, list, shell, renderContext } from "./render.mjs";
 import {
   home,
   topics,
@@ -70,6 +71,7 @@ export function createWiki({
   repo = wikiRepo(),
   database = ":memory:",
   origin = "http://127.0.0.1:4317",
+  conversations = conversationsEnabled(),
   traces = process.env.WIKI_TRACES || null,
   traceIndexRoot = traces,
   evidenceUrl = process.env.WIKI_EVIDENCE_URL || null,
@@ -83,6 +85,13 @@ export function createWiki({
   development = false,
   traceSearchPool = null,
 } = {}) {
+  if (typeof conversations !== "boolean")
+    throw Error("conversations must be boolean");
+  if (!conversations) {
+    traces = null;
+    traceIndexRoot = null;
+    evidenceUrl = null;
+  }
   if (control && control.filename === ":memory:")
     throw Error("Durable control store required");
   if (autoLogin && !auth)
@@ -157,7 +166,7 @@ export function createWiki({
   }
   const timer = setInterval(refresh, 1000);
   timer.unref();
-  const server = http.createServer(async (req, res) => {
+  const handleRequest = async (req, res) => {
     const requestAbort = new AbortController();
     const cancelRequest = () => {
       if (!res.writableEnded) requestAbort.abort();
@@ -170,7 +179,7 @@ export function createWiki({
       agentAction = null,
       protectedResponse = false,
       canWrite = write,
-      canTrace = !control,
+      canTrace = conversations && !control,
       responseAction = "read";
     const originalWriteHead = res.writeHead;
     const authorizeResponse = () => {
@@ -242,6 +251,11 @@ export function createWiki({
         return send(200, { status: "ok" });
       if (req.headers.host !== new URL(origin).host)
         return send(403, { error: "Invalid host" });
+      if (!conversations && evidencePath(url.pathname))
+        return send(404, {
+          error: "Conversations are disabled",
+          code: "CONVERSATIONS_DISABLED",
+        });
       if (url.pathname === "/api/openapi.json" && req.method === "GET")
         return send(200, openAPI());
       if (agentAuth) {
@@ -333,7 +347,7 @@ export function createWiki({
         protectedResponse = true;
         try {
           agentAuth.require(agentToken, "trace");
-          canTrace = true;
+          canTrace = conversations;
         } catch {
           canTrace = false;
         }
@@ -893,7 +907,7 @@ export function createWiki({
           actor.id,
           responseAction === "trace" ? "editor" : "reader",
         );
-        canTrace = permits(control.role(actor.id), "trace");
+        canTrace = conversations && permits(control.role(actor.id), "trace");
         if (
           localLogin &&
           req.method === "POST" &&
@@ -1119,6 +1133,7 @@ export function createWiki({
               WIKI_GIT_LOCKED: "0",
               WIKI_PUSH: push ? "1" : "0",
               WIKI_EVIDENCE_URL: evidenceUrl || "",
+              WIKI_CONVERSATIONS: conversations ? "1" : "0",
             },
             stdio: lifecycleStdio(["pipe", "pipe", "pipe"]),
           },
@@ -1621,6 +1636,7 @@ export function createWiki({
           mcp: { url: origin + "/mcp", transport: "streamable-http" },
           write: canWrite,
           externalEvidence: !!evidence,
+          conversations,
           evidenceAccess: canTrace,
           access: control
             ? "Authenticated session and current space grant required. Mutations require exact Origin and session X-Wiki-CSRF. MCP retains the caller session."
@@ -1707,7 +1723,8 @@ export function createWiki({
         url.search;
       if (cache.has(key)) return send(200, cache.get(key), "text/html");
       let html;
-      if (url.pathname === "/") html = home(wiki, url.searchParams);
+      if (url.pathname === "/")
+        html = home(wiki, url.searchParams, conversations);
       if (url.pathname === "/wiki/") html = topics(wiki, url.searchParams);
       const route = url.pathname.match(
         /^\/wiki\/([a-z0-9-]+)\/(?:(history|edit|compare|sources)\/|revision\/([1-9][0-9]*|[a-f0-9]{40})\/)?$/,
@@ -1749,7 +1766,10 @@ export function createWiki({
         });
       else res.end();
     }
-  });
+  };
+  const server = http.createServer((req, res) =>
+    renderContext.run({ conversations }, () => handleRequest(req, res)),
+  );
   const mcpApi = new McpApiClient(server, origin);
   const makeMcp = (writable, evidenceAccess) =>
     createWikiMcp({
@@ -1798,8 +1818,9 @@ if (
   path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)
 ) {
   const owner = lifecycleLockFd();
-  let traceIndexRoot = process.env.WIKI_TRACES || null;
-  if (process.env.WIKI_TRACE_INDEX_ROOT) {
+  const conversations = conversationsEnabled();
+  let traceIndexRoot = conversations ? process.env.WIKI_TRACES || null : null;
+  if (conversations && process.env.WIKI_TRACE_INDEX_ROOT) {
     if (owner === null)
       throw Error("Trace projection requires managed lifecycle ownership");
     if (!traceIndexRoot)
@@ -1821,6 +1842,7 @@ if (
     throw Error("Enable Google/OIDC or local login");
   const auth = settings ? configuredOIDC(settings, origin) : null;
   createWiki({
+    conversations,
     traceIndexRoot,
     control,
     auth,

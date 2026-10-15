@@ -35,8 +35,11 @@ test(
       WIKI_WRITE: "0",
       WIKI_PUSH: "0",
       WIKI_DATABASE: ":memory:",
-      WIKI_TRACES: "",
-      WIKI_EVIDENCE_URL: "",
+      WIKI_CONVERSATIONS: "0",
+      // Disabled deployments must start without opening or validating sources.
+      WIKI_TRACES: path.join(state, "absent-traces"),
+      WIKI_EVIDENCE_URL: "invalid while disabled",
+      WIKI_TRACE_INDEX_ROOT: path.join(state, "absent-index"),
     });
     const setup = JSON.parse(
       execFileSync(
@@ -148,8 +151,17 @@ test(
       (await request("/api/articles/guide/current.json")).status,
       200,
     );
+    assert.equal((await request("/traces/")).status, 404);
+    assert.equal((await request("/api/articles/health.json")).status, 200);
+    assert.equal(fs.existsSync(env.WIKI_TRACES), false);
+    assert.equal(fs.existsSync(env.WIKI_TRACE_INDEX_ROOT), false);
     await stop();
+    env.WIKI_CONVERSATIONS = "1";
+    env.WIKI_TRACES = "";
+    env.WIKI_EVIDENCE_URL = "";
+    delete env.WIKI_TRACE_INDEX_ROOT;
     await start();
+    assert.equal((await request("/traces/")).status, 200);
     assert.equal((await request("/api/me")).status, 200);
     assert.equal((await request("/wiki/guide/")).status, 200);
   },

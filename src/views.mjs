@@ -27,7 +27,7 @@ const topicSelect = (wiki, selected) =>
   )
     .map((t) => option(t, t, selected))
     .join("")}</select></label>`;
-export function home(wiki, params) {
+export function home(wiki, params, conversations = true) {
   const range = ["today", "week"].includes(params.get("range"))
     ? params.get("range")
     : "all";
@@ -71,7 +71,7 @@ export function home(wiki, params) {
             })
             .join("")
         : empty("No updates in this period.")
-    }<p class="pagination">${link("/wiki/", "Browse all articles →")}</p></div><aside class="sidebar"><section><h2>Open questions</h2>${questions.length ? questions.map(({ q, p }) => `<p>${e(q)}<br>${link(`/wiki/${p.id}/`, p.title)}</p>`).join("") : empty("No open questions recorded.")}</section><section><h2>Explore topics</h2>${list(topicNames(wiki).map((t) => link(queryLink("/wiki/", { topic: t }), t)))}</section><section><h2>Follow the evidence</h2><p>Read the original conversations behind your articles.</p>${link("/traces/", "Browse conversations →")}</section></aside></div>`,
+    }<p class="pagination">${link("/wiki/", "Browse all articles →")}</p></div><aside class="sidebar"><section><h2>Open questions</h2>${questions.length ? questions.map(({ q, p }) => `<p>${e(q)}<br>${link(`/wiki/${p.id}/`, p.title)}</p>`).join("") : empty("No open questions recorded.")}</section><section><h2>Explore topics</h2>${list(topicNames(wiki).map((t) => link(queryLink("/wiki/", { topic: t }), t)))}</section>${conversations ? `<section><h2>Follow the evidence</h2><p>Read the original conversations behind your articles.</p>${link("/traces/", "Browse conversations →")}</section>` : ""}</aside></div>`,
     { active: "Home", className: "home-page" },
   );
 }

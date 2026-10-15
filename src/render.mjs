@@ -1,3 +1,4 @@
+import { AsyncLocalStorage } from "node:async_hooks";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { SiteHeader, SiteFooter } from "../ui/components/site.mjs";
@@ -185,12 +186,19 @@ export const queryLink = (pathname, params) =>
       ([, v]) => v !== "" && v !== null && v !== undefined,
     ),
   ).toString();
+// Keep deployment rendering choices isolated across concurrent server instances.
+export const renderContext = new AsyncLocalStorage();
 export function shell(
   title,
   body,
-  { active = "", className = "", signedOut = false } = {},
+  {
+    active = "",
+    className = "",
+    signedOut = false,
+    conversations = renderContext.getStore()?.conversations ?? true,
+  } = {},
 ) {
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light dark"><link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><title>${escape(title)} · Agent Wiki</title><script src="/assets/theme.js"></script><link rel="stylesheet" href="/assets/theme.css"><link rel="stylesheet" href="/assets/typeset.css"><link rel="stylesheet" href="/assets/style.css"><link rel="stylesheet" href="/assets/ui.css"><link rel="stylesheet" href="/assets/components.css"><script type="module" src="/assets/vendor/ui.js"></script><script type="module" src="/assets/client.js"></script></head><body><a class="skip-link" href="#main">Skip to content</a>${renderToStaticMarkup(createElement(SiteHeader, { active, signedOut }))}<main id="main" class="${escape(className)}">${body}</main>${renderToStaticMarkup(createElement(SiteFooter, { signedOut }))}</body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light dark"><link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><title>${escape(title)} · Agent Wiki</title><script src="/assets/theme.js"></script><link rel="stylesheet" href="/assets/theme.css"><link rel="stylesheet" href="/assets/typeset.css"><link rel="stylesheet" href="/assets/style.css"><link rel="stylesheet" href="/assets/ui.css"><link rel="stylesheet" href="/assets/components.css"><script type="module" src="/assets/vendor/ui.js"></script><script type="module" src="/assets/client.js"></script></head><body data-conversations="${conversations}"><a class="skip-link" href="#main">Skip to content</a>${renderToStaticMarkup(createElement(SiteHeader, { active, signedOut, conversations }))}<main id="main" class="${escape(className)}">${body}</main>${renderToStaticMarkup(createElement(SiteFooter, { signedOut }))}</body></html>`;
 }
 export function sources(page) {
   const found = new Map();

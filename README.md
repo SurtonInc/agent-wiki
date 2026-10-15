@@ -62,7 +62,10 @@ For managed HTTPS hosting, example mode also accepts `WIKI_ORIGIN` and
 For individuals and small trusted teams who want a shared knowledge collection
 that humans and agents can search and maintain. Articles live in a separate Git
 repository; optional Codex, Claude Code and pi snapshots preserve original conversation evidence.
-Edits appear after commit without rebuilding the site.
+Edits appear after commit without rebuilding the site. Companies can run an
+article-only wiki with `WIKI_CONVERSATIONS=0`; the optional conversation archive,
+UI and evidence tools are disabled without deleting stored data. Existing
+installations remain enabled by default. See [the setting and its scope](docs/traces.md#enable-or-disable-conversations).
 
 **Version 0.9.4 — pre-1.0 release.** Linux and macOS are
 supported; native Windows is not verified. The quickstart uses `main`, which may

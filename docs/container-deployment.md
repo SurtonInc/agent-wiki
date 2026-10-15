@@ -62,3 +62,11 @@ Agent Wiki 0.8.13 adds `/bin/agent-wiki-health` in the OCI image. It probes only
 loopback `GET /healthz` on the configured `PORT` and exits nonzero when the
 service is unavailable or unhealthy. It ignores outbound HTTP proxy settings.
 Use it for container liveness; retain authenticated application acceptance.
+
+## Optional Conversations
+
+Set `WIKI_CONVERSATIONS=0` in the service environment to disable Conversations
+and its evidence interfaces. Recreate/restart the service with the updated
+environment. Existing installations default to enabled when unset. Preserve
+archive volumes and their backups; this setting does not delete data or stop
+external collectors. See [conversation settings](traces.md#enable-or-disable-conversations).

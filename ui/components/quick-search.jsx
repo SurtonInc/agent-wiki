@@ -8,6 +8,7 @@ import {
   DialogDescription,
 } from "./dialog.jsx";
 export function QuickSearch() {
+  const conversations = document.body.dataset.conversations !== "false";
   const [open, setOpen] = useState(false);
   useEffect(() => {
     const onKey = (event) => {
@@ -31,12 +32,14 @@ export function QuickSearch() {
       <DialogContent>
         <DialogTitle>Search your knowledge</DialogTitle>
         <DialogDescription>
-          Find articles and the conversations behind them.
+          {conversations
+            ? "Find articles and the conversations behind them."
+            : "Find articles in your wiki."}
         </DialogDescription>
         <SearchForm id="dialog-query" required />
         <nav aria-label="Quick navigation">
           <a href="/wiki/">Browse articles</a>
-          <a href="/traces/">Explore conversations</a>
+          {conversations && <a href="/traces/">Explore conversations</a>}
         </nav>
       </DialogContent>
     </Dialog>

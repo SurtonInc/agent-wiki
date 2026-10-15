@@ -25,30 +25,36 @@ export function Brand() {
   );
 }
 
-export function SiteNavigation({ active }) {
+export function SiteNavigation({ active, conversations = true }) {
   return h(
     "nav",
     { className: "site-nav", "aria-label": "Main navigation" },
-    destinations.map(([href, label]) =>
-      h(
-        "a",
-        {
-          key: href,
-          href,
-          "aria-current": active === label ? "page" : undefined,
-        },
-        label,
+    destinations
+      .filter(([href]) => conversations || href !== "/traces/")
+      .map(([href, label]) =>
+        h(
+          "a",
+          {
+            key: href,
+            href,
+            "aria-current": active === label ? "page" : undefined,
+          },
+          label,
+        ),
       ),
-    ),
   );
 }
 
-export function SiteHeader({ active, signedOut = false }) {
+export function SiteHeader({
+  active,
+  signedOut = false,
+  conversations = true,
+}) {
   return h(
     "header",
     { className: signedOut ? "site-header signed-out-header" : "site-header" },
     h(Brand),
-    !signedOut && h(SiteNavigation, { active }),
+    !signedOut && h(SiteNavigation, { active, conversations }),
     h(
       "div",
       { className: "header-actions" },

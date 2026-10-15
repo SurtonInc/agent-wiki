@@ -1,9 +1,52 @@
 # Agent traces
 
+## Enable or disable Conversations
+
+Conversation evidence is optional per deployment. Set `WIKI_CONVERSATIONS=0`
+in the server environment and restart to run an article-only wiki. Set it to `1`
+and restart to restore conversation access. Unset defaults to enabled, preserving
+existing deployments; other values are rejected. The embedding API accepts
+`createWiki({ conversations: false })` (a boolean).
+
+When disabled:
+
+- Navigation, home-page prompts, quick navigation and search show articles only.
+- MCP and WebMCP omit trace and attachment tools, including for managers and
+  agents with trace scope. Reconnect MCP clients and reload browser pages after
+  changing the setting; stale calls cannot retrieve evidence.
+- Conversation, trace, original-file and attachment routes return HTTP 404 with
+  `CONVERSATIONS_DISABLED`. The static OpenAPI document continues to describe
+  all supported operations, including those unavailable in this deployment.
+- The server ignores `WIKI_TRACES`, `WIKI_EVIDENCE_URL` and
+  `WIKI_TRACE_INDEX_ROOT`: it does not read, index or contact those sources, and
+  evidence availability does not affect article health checks.
+- Article reading, search, history and editing remain available under their
+  existing permissions. Published quotations and citation links stay in articles;
+  their original evidence is unavailable until Conversations is enabled again.
+  New verified conversation quotations fail with `EVIDENCE_UNAVAILABLE` while
+  ordinary edits preserve existing evidence. Explicitly clearing evidence still
+  works. Separately published article images and PDFs remain available.
+
+The flag neither deletes archives nor changes saved grants. Re-enabling restores
+access under the usual permissions and configured source paths. It does not start
+collection when enabled, or stop independent collectors and direct-storage
+maintenance commands when disabled. Manage those jobs separately. The synthetic
+example also skips importing/indexing its sample conversations when disabled.
+
+For packaged/container installations, pass the setting in the service environment
+alongside the existing deployment variables. Managed lifecycle ownership,
+archive validation and backup/restore requirements remain unchanged; disabling
+access does not remove the archive from a managed installation's recovery scope.
+
+`/api/articles/authoring.json` reports the deployment's `conversations` boolean
+and the caller's effective `evidenceAccess` separately.
+
+## Storage
+
 Articles remain Markdown in Git. Traces have their own authoritative storage:
 original Codex, Claude Code or pi JSONL snapshots, imported explicitly into `WIKI_TRACES`.
 No personal session directories are scanned. The example imports two fictional
-sessions into `.runtime/traces` and links to them from the Traces navigation.
+sessions into `.runtime/traces` and links to them from the Conversations navigation.
 
 ```sh
 node scripts/import-trace.mjs /data/wiki-traces /path/session.jsonl "Prototype discussion"
