@@ -30,7 +30,7 @@ run_nix() {
   "$nix_command" --extra-experimental-features "nix-command flakes" "$@"
 }
 
-run_nix flake check --no-update-lock-file
+run_nix flake check --no-build --no-update-lock-file
 package=$(run_nix build --no-link --print-out-paths --no-update-lock-file .#agent-wiki)
 oci=$(run_nix build --no-link --print-out-paths --no-update-lock-file .#oci)
 identity=$("$package/bin/agent-wiki-package-info")

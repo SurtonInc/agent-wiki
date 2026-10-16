@@ -105,14 +105,12 @@ as JSON rather than truncating it.
 
 ## Verification and compatibility
 
-`tests/interface-parity.test.mjs` exercises real CLI processes, local human login,
-browser OAuth through a synthetic approval callback, refresh/uncertain-refresh
-recovery, identical HTTP/MCP/WebMCP results, attributed writes, lost-response
-retries, conflicting revisions, role changes and revocation. Agent-auth tests
-cover full versus narrowed evidence scope, machine renewal and independent runs.
-Authenticated HTTP tests cover evidence search, previews, original records,
-media/downloads, delayed success/error revocation and no archive contact on denial.
-Browser tests exercise actual sign-in, grants, editing and reader behavior.
+The automated parity, authorization, and browser suites were removed on October
+16, 2026. `npm run check` still validates the generated OpenAPI contract and static
+types. It does not exercise runtime parity, revocation, retries, or sign-in.
+Use synthetic content for any manual verification and record the interfaces and
+permission cases actually checked. Historical coverage is recorded in
+[verification](verification.md).
 
 Native WebMCP remains browser-dependent; SDK/schema tests alone do not establish
 support in every browser. Named client evidence and its limits remain in

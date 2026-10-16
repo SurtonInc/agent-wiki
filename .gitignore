@@ -10,9 +10,6 @@ node_modules/
 *.key
 *.log
 
-test-results/
-playwright-report/
-
 public/vendor/
 
 **/.terraform/

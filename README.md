@@ -73,6 +73,10 @@ include unreleased work. See [verification](docs/onboarding-verification.md),
 [changelog](CHANGELOG.md), and [release policy](docs/releases.md).
 Created by Chris Reynolds, cofounder of **Dispatch Labs AI**, and released under MIT.
 
+Automated test suites and acceptance runners were removed from `main` on October
+16, 2026. Contributor checks now cover builds, generated contracts, formatting,
+and static types; earlier test results remain dated [verification records](docs/verification.md).
+
 ## Use your own content
 
 The example is deliberately unauthenticated and synthetic. A real wiki requires

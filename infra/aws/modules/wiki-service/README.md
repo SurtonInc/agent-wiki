@@ -213,15 +213,13 @@ Local validation uses OpenTofu 1.12.6 and AWS provider 6.61.0:
 tofu fmt -check -recursive infra/aws
 tofu -chdir=infra/aws/modules/wiki-service init -backend=false
 tofu -chdir=infra/aws/modules/wiki-service validate
-tofu -chdir=infra/aws/modules/wiki-service test
 tofu -chdir=infra/aws/examples/wiki-service init -backend=false
 tofu -chdir=infra/aws/examples/wiki-service validate
 ```
 
-The tests use a mocked provider and make no AWS API calls. They check the full
-image digest, x86_64 target, non-root identity, dropped capabilities, read-only
-root, S3 Files access-point mount, task-definition retention, singleton service
-settings, receipt gate, secret-reference separation, and exact release outputs.
+The provider-mocked test suite was removed on October 16, 2026. The commands
+above check formatting and configuration validity without applying AWS changes;
+they do not exercise the service's runtime or deployment workflow.
 
 This validation does not prove live S3 Files behavior. Agent Wiki's managed
 lifecycle currently relies on `flock`, atomic rename, Git, and SQLite/WAL
@@ -232,5 +230,5 @@ gate, independent recovery, and functional browser/agent acceptance pass.
 
 Private installations can set `egress_rules` to retain a narrower existing
 network policy, such as HTTPS plus NFS to a storage security group. Omission
-preserves the module's original outbound policy. Provider-mocked tests exercise
-configuration only; live cloud acceptance remains a separate deployment step.
+preserves the module's original outbound policy. Live cloud acceptance remains
+a separate deployment step.

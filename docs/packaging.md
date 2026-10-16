@@ -87,7 +87,7 @@ checks:
 ```
 
 `check-package` requires native `x86_64-linux`, Nix and a clean Git checkout. It
-runs the locked flake checks, builds the host and OCI outputs without publishing,
+evaluates the locked flake, builds the host and OCI outputs without publishing,
 checks that package identity names the exact Git revision, and prints bounded
 store paths, sizes and identity metadata.
 
@@ -132,8 +132,9 @@ global Git configuration. Do not put Git credentials in the image or managed
 backup. See the [generic Compose guide](container-deployment.md) for an
 application-owned example; host-specific service, routing, identity and secret
 configuration belongs in the deployment owner's infrastructure repository. Before
-activation, run the [existing-state container adoption qualifier](qualify-package.md#existing-state-container-adoption)
-against the exact old and candidate images on the target Docker architecture.
+activation, verify adoption against the exact old and candidate images using
+disposable synthetic state on the target Docker architecture. The former
+[automated acceptance runners](qualify-package.md) have been removed.
 
 The direct entry points expose existing application operations and bypass the
 managed writer fence. Managed activation, bootstrap, maintenance, backup, and

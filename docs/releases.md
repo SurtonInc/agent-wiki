@@ -32,10 +32,12 @@ and additions. It does not imply production readiness.
 2. Describe changes since the previous release in `CHANGELOG.md`, including
    compatibility and migration notes. Update `package.json`, both root version
    fields in `package-lock.json`, and the README status together.
-3. Run `npm ci`, `npm run check`, `npm run test:browser`, and
-   `npm audit --omit=dev --audit-level=high` using synthetic data. Review the diff
+3. Run `npm ci`, `npm run check`, and
+   `npm audit --omit=dev --audit-level=high`. Record manual verification of changed
+   workflows using synthetic data; automated test suites were removed on
+   October 16, 2026. Review the diff
    and public source archive for unintended content. Keep dependencies locked.
-4. Commit and push; wait for the Linux/macOS runtime matrix and browser CI to pass
+4. Commit and push; wait for the configured source and package checks to pass
    on that exact commit before tagging. Linux checks run through the maintainer-managed
    local runner, not GitHub Actions; run the same `scripts/check` gate on macOS
    and record the exact SHA and result. Do not treat a queued CI run as a pass.

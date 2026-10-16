@@ -8,8 +8,7 @@ selected by article content. Redirects and upstream cookie forwarding are disabl
 
 ## Read-only provider contract
 
-All routes below are relative to the configured base. Errors use HTTP 400, 404 or 503. JSON responses must be objects. A synthetic implementation is available in
-`tests/evidence-fixture.mjs`.
+All routes below are relative to the configured base. Errors use HTTP 400, 404 or 503. JSON responses must be objects.
 
 - `health`: archive readiness metadata.
 - `search?q=&limit=20&offset=0&harness=&machine=`: `{results, total, nextOffset}`.

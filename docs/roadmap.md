@@ -10,7 +10,7 @@ what comes next.
 
 | Issue                                                                                     | Scope                                                                               | Useful experience                           |
 | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------- |
-| [Keyboard-only editor journey #4](https://github.com/dispatchlabs-ai/agent-wiki/issues/4) | Add one browser regression and fix any demonstrated focus/navigation defect.        | JavaScript and Playwright                   |
+| [Keyboard-only editor journey #4](https://github.com/dispatchlabs-ai/agent-wiki/issues/4) | Reproduce and fix any demonstrated focus/navigation defect.                         | JavaScript and browser accessibility        |
 | [Claude Code walkthrough #5](https://github.com/dispatchlabs-ai/agent-wiki/issues/5)      | Verify one additional client against synthetic content and document exact versions. | Technical writing and access to that client |
 | [WSL2 rehearsal #6](https://github.com/dispatchlabs-ai/agent-wiki/issues/6)               | Record installation, browser/client reachability, and known limits.                 | Access to a WSL2 machine                    |
 
@@ -25,7 +25,7 @@ for setup and review expectations.
 - A clear path from installation to a sourced answer and a reviewable edit.
 - Verified client compatibility, rather than assuming every MCP client behaves alike.
 - Recoverable content, isolated examples, and actionable failures.
-- Small contributions with a reproducible test or observed user outcome.
+- Small contributions with a reproducible example or observed user outcome.
 
 ## Discuss before implementation
 

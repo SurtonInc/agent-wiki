@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Remove automated tests, test fixtures, Playwright configuration, and standalone
+  package/container/client acceptance runners. Remove test-only dependencies and
+  the package smoke derivation. Keep contract, formatting, type, build, package
+  identity, and dependency-audit checks; document earlier results as historical.
+
 - Add the deployment flag `WIKI_CONVERSATIONS=0` for article-only wikis. Hide
   conversation navigation/search and evidence tools, block original evidence
   routes, and skip server evidence access while preserving stored archives,

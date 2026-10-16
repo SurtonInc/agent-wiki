@@ -252,21 +252,6 @@ its login token in the wiki connection JSON or public registration.
 [Claude authentication](https://code.claude.com/docs/en/authentication),
 [subscription setup](https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-or-max-plan).
 
-Before connecting real content, optionally run the repository's synthetic
-model-driven acceptance check from the engine checkout:
-
-```sh
-node scripts/verify-claude.mjs --run
-```
-
-This uses your authenticated Claude CLI and model usage. It creates a temporary
-wiki, trace index, editor identity, and key; exercises article/trace search/read,
-saves and reads back a synthetic article, checks run closure, and removes the
-fixture. No real wiki endpoint is used. Successful output has `verified: true`;
-assertion failures exit nonzero. It is deliberately excluded from `npm run check`
-so routine tests do not make billed model requests. Invocation without `--run`
-only prints help.
-
 After generating, registering, and checking a separate `claude-researcher.json`,
 create `/home/you/.config/agent-wiki/claude-mcp.json` on the runtime machine:
 
@@ -371,16 +356,6 @@ Protected resource links remain tool content; no credentials enter model results
 Connection failures show a notification and require reload after repair.
 [Pi's extension documentation](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/extensions.md)
 describes global discovery and lifecycle hooks.
-
-Optional real-model acceptance, using disposable synthetic content only:
-
-```sh
-node scripts/verify-pi.mjs --run
-```
-
-This uses the local Pi account and configured model/thinking settings, consumes
-model usage, and tests global extension discovery, article/trace search and read,
-article creation/read-back, and run closure. It requires an existing Pi login.
 
 ## 5. Verify tool use from the runtime
 

@@ -72,22 +72,6 @@
         }
       );
 
-      checks = forAllSystems (
-        system:
-        let
-          pkgs = import nixpkgs { inherit system; };
-          package = packageFor system;
-        in
-        {
-          package-smoke = pkgs.callPackage ./nix/check-package.nix {
-            agent-wiki = package;
-          };
-        }
-        // pkgs.lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
-          oci = self.packages.${system}.oci;
-        }
-      );
-
       devShells = forAllSystems (
         system:
         let

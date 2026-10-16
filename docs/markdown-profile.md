@@ -106,8 +106,6 @@ article or trace data. The dialog also opens with Ctrl/Command+K.
 license notices are generated under ignored `public/vendor/` and served locally.
 No CDN, frontend service or content compilation is involved.
 
-The synthetic [rendering fixture](../tests/fixtures/rich-markdown.md) demonstrates
-the full profile. Run `npm run check` and `npm run test:browser` for sanitization,
-source retention, live content updates, keyboard interactions and responsive
-coverage. Screenshot outputs are under `.runtime/rich-review/` and
-`.runtime/responsive-review/`.
+The rendering fixtures and automated browser suites were removed on October 16, 2026. Run `npm run check` for static checks and use synthetic Markdown in the
+example for manual review of rendering, source retention, keyboard interactions,
+and responsive layouts.

@@ -43,8 +43,8 @@ Keep the example's loopback binding; do not expose it to the LAN.
 
 The [verification record](onboarding-verification.md#windows-and-wsl2--september-17-2026)
 identifies the tested environment and client scope. This runs the Linux server
-under WSL2; native Windows server support remains unverified. Browser contributors
-also need the [Chromium system prerequisites](../CONTRIBUTING.md).
+under WSL2; native Windows server support remains unverified. See
+[contributing](../CONTRIBUTING.md) for current build and manual verification steps.
 
 ## Follow a claim to its evidence
 
@@ -106,8 +106,8 @@ against this source with the citation-origin fix. The test used the temporary
 command-line MCP URL override above, with a free loopback port. Its answer linked
 directly to the original passage, which was opened and checked in a browser.
 Example Git history remained unchanged. Agent-driven saving was not part of this
-run; the browser save below and the official MCP SDK's save/retry/conflict tests
-are separately tested. See the [verification record](onboarding-verification.md)
+run. The browser save below is a separate walkthrough; SDK save/retry/conflict
+coverage belongs to the historical suites removed on October 16, 2026. See the [verification record](onboarding-verification.md)
 for scope and earlier runs. Other clients and remote authentication setups need
 their own checks; protocol support alone is not a compatibility claim.
 

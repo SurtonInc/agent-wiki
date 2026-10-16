@@ -52,13 +52,10 @@ checks, atomic commits, and retry receipts. A stale revision requires reconcilia
 
 ## Verification
 
-Run `npm run check` and `npm run test:browser`. Browser fixtures use temporary
-synthetic content and trace repositories. Coverage includes eleven routes at
-320px, 390px, 768px, 1024px, 1440px, 1920px, and 2560px in both themes, document overflow, appearance persistence,
-mobile filters, trace anchors, preview sanitization, draft retention, and saving.
-Responsive and rich Markdown checks run each screen-size and theme combination
-as a separate test, with a fresh browser context and the default test timeout.
-Review screenshots are written under ignored `.runtime/responsive-review/`.
+Run `npm ci` and `npm run check`, then inspect affected flows with `npm run
+example`. Automated browser suites were removed on October 16, 2026. Manual
+review should cover narrow and wide layouts, both themes, keyboard navigation,
+article/trace links, draft retention, preview, and saving as relevant to the change.
 
 The synthetic example articles cite the bundled immutable traces at their original
 answer lines. To refresh an existing demo, review and commit the example Markdown
@@ -71,7 +68,7 @@ its API differences, native conversation URLs, files, and concurrent search.
 The [Markdown profile](markdown-profile.md) documents rich blocks and browser
 asset setup. Shadcn/Base UI supplies the search dialog and content tabs; ordinary
 server-rendered navigation and forms retain native behavior. Search opens with
-Ctrl/Command+K. Rich-feature tests cover keyboard focus, no-JavaScript reading,
+Ctrl/Command+K. Manual rich-feature review should cover keyboard focus, no-JavaScript reading,
 isolated Mermaid rendering, preview parity and live content commits.
 
 Article sidebars move below the reading column through 1000px, avoiding a cramped

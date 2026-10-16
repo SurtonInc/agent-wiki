@@ -1,5 +1,13 @@
 # Dependency review
 
+## Test dependency removal — October 16, 2026
+
+The automated suites and acceptance runners have been removed. Their direct
+development dependencies `@playwright/test` and `oidc-provider`, unused transitive
+dependencies, and the test-provider-only `cookies` override are removed from the
+manifest and lockfile. TypeScript, Node types, Prettier, and runtime dependencies
+remain. Dated inventories below describe their recorded revisions.
+
 ## MCP client remediation — October 6, 2026 (0.9.4)
 
 The access-directory validation found newly indexed

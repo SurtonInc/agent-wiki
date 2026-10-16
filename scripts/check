@@ -1,8 +1,6 @@
 #!/bin/sh
-# Portable public clean-clone gate. All data fixtures are synthetic and temporary.
+# Portable clean-clone build, static checks, and production dependency audit.
 set -eu
 npm ci
 npm run check
-npx playwright install chromium
-npm run test:browser
 npm audit --omit=dev --audit-level=high

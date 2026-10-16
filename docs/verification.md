@@ -1,5 +1,18 @@
 # Verification
 
+## Current checks — October 16, 2026
+
+The automated application, browser, type-regression, infrastructure, package-smoke,
+and acceptance suites have been removed, together with their fixtures and
+Playwright/OIDC test dependencies. `npm ci` builds browser assets. `npm run check`
+checks generated contracts, formatting, and static types. `scripts/check` also
+audits production dependencies; `scripts/check-package` builds package artifacts
+and verifies their identity. None of these remaining commands runs a test suite.
+
+Use the synthetic example for manual functional verification and report what was
+actually exercised. The dated results below describe earlier source revisions
+and do not establish test coverage for current `main`.
+
 ## 0.6.0 interface and authorization review — September 16, 2026
 
 The release adds a separately enforced editorial-evidence boundary, an ordinary

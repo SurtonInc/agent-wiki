@@ -1,5 +1,9 @@
 # Onboarding and discovery verification
 
+These are historical verification records. The automated suites and acceptance
+runners named below were removed on October 16, 2026; their commands apply only
+to the recorded source revisions. See [current checks](verification.md#current-checks--october-16-2026).
+
 ## Windows and WSL2 — September 17, 2026
 
 The local walkthrough passed on public `main`
@@ -150,7 +154,7 @@ and UI build still succeeded. Preview was verified from returned HTML, not a
 visual browser inspection. The agents' candidate instructions were local while
 the runnable checkout was the unchanged public 0.5.0 engine.
 
-The hosted setup has a separate regression in `tests/hosting-setup.test.mjs`:
+The hosted setup was also covered by the former `tests/hosting-setup.test.mjs`:
 it runs the documented bootstrap CLI and production server with a fresh content
 repository/control database, rejects anonymous content, completes initial account
 setup, reads an article, restarts and verifies retained session access. It models

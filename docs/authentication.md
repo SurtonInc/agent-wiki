@@ -220,21 +220,14 @@ The direct CLI writer is trusted operator maintenance, outside HTTP authorizatio
 ## Synthetic development and verification
 
 `npm run example` runs the existing loopback-only synthetic reader without a
-provider account. It cannot serve operator content. The dedicated authentication
-browser tests start the `oidc-provider` standards fixture on ephemeral loopback
-ports with fictional owner/visitor accounts and a separate synthetic repository.
-That fixture must never authenticate real content.
+provider account. It cannot serve operator content. Automated authentication
+suites and their synthetic OIDC provider were removed on October 16, 2026.
 
-Browser tests exercise actual redirects, code exchange, PKCE, sessions, editing,
-manager grants, and logout through this provider. HTTP tests cover content-route
-boundaries, expired sessions, forged headers and callbacks, CSRF, actor-bound
-receipts, cached reads after revocation, queued writes, control-store failure, and
-revocation during asynchronous trace rendering.
-
-Browser coverage also exercises local invitation, password setup, direct grants,
-email/password sign-in and password change without group membership. Unit tests
-cover one-use/expired links, reset revocation, hashing, identity separation and
-rate limits. Only synthetic accounts and content are used in these tests.
+Use disposable synthetic identities and repositories for manual verification of
+sign-in, invitations, grants, editing, logout, and revocation. Never connect a
+synthetic provider to real content. The [verification record](verification.md)
+preserves the scope and dates of earlier checks; `npm run check` now performs
+static checks only.
 
 A live Google round trip remains an installation acceptance step: Google
 client credentials and callback registration are operator-specific.

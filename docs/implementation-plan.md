@@ -15,10 +15,9 @@ and UI where applicable. Do not create a separate microservice for each module.
 Keep existing Git correctness, sanitization, trace fidelity, resource bounds, and
 idempotency behavior unless this design explicitly changes the contract.
 
-`npm run check` remains the baseline. Browser-facing changes also run
-`npm run test:browser`; use real browser interactions for identity selection,
-sharing, search, and edits. Test mocks validate policy logic, not real OIDC or
-external workload integration. Record an actual selected-provider integration
+`npm run check` remains the static-check baseline. The automated suites were
+removed on October 16, 2026. Use manual browser interactions with synthetic data
+for identity selection, sharing, search, and edits. Record an actual selected-provider integration
 before calling authentication ready. Update README, API contracts, examples, and
 operator documentation with each implemented capability.
 
