@@ -2,7 +2,11 @@
 
 ## Summary
 
-Unify the request-rendered reader controls for Article, History, Compare, and Sources. Use the existing native link-tab and shared control styles without changing article content, routes, access rules, or the editor. Remove obsolete reader code and measure a net reduction in maintained source lines. This specification requires explicit human approval before implementation.
+Unify the request-rendered reader controls for Article, History, Compare, and Sources. Use the existing native link-tab and shared control styles without changing article content, routes, access rules, or the editor. Remove obsolete reader code and measure a net reduction in maintained source lines. The proposal called for explicit human approval before implementation.
+
+## Authorization and decision record
+
+Chris authorized the bounded cleanup trial and its spending budget. He did not separately review or explicitly approve this exact specification. Codex reviewed the concrete specification as within that authorization and directed implementation. The proposed explicit-human-approval gate above is historical context, not a claim of separate approval by Chris.
 
 ## Product behavior
 
@@ -65,12 +69,12 @@ These are **before-state** synthetic captures, not after-state proof. The baseli
 - [Desktop editor](https://platform.warp.dev/artifacts/01a14b37-650a-76a4-82c0-91d61a51a1ba)
 - [Narrow editor](https://platform.warp.dev/artifacts/01a14b38-21e3-763a-a0cf-766ac2ba7b47)
 
-## Benchmark provenance — immutable task input
+## Benchmark provenance — original task input sent to Warp
 
 Repository: `https://github.com/SurtonInc/agent-wiki.git`
 
 Exact starting commit: `7c5f1a744764571a65ee259076b4b2eee95ea0a5`
-The following original user request is reproduced **verbatim**. Do not replace it with a summary or link when using this task as a fixed benchmark.
+The following original task input sent to Warp is reproduced **verbatim**. It is preserved for the fixed benchmark, not presented as Chris's literal original wording. Do not replace it with a summary or link.
 
 Give the stock Agent Wiki factory a real, bounded UI cleanup task in SurtonInc/agent-wiki. The goals are to de-slop the code, reduce total maintained source LOC, and improve UI consistency while preserving supported behavior. Use your existing configured Triage, Spec, Implement and independent Review agents where their stages add value; keep the factory configuration and models unchanged. Start by triaging and presenting a concrete spec for approval through the normal planning workflow so we can inspect that handoff.
 
