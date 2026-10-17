@@ -76,11 +76,6 @@ a:hover {
 .revision-meta p {
   margin: 0;
 }
-.edit-article {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-}
 .article-layout article {
   font-family: Georgia, serif;
   font-size: 18px;
@@ -805,9 +800,6 @@ footer select {
   }
 }
 @media (min-width: 761px) {
-  .edit-article {
-    min-height: 28px;
-  }
   .mobile-toc {
     display: none;
   }

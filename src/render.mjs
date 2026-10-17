@@ -246,9 +246,9 @@ export function sources(page) {
 export function articleHeader(
   p,
   active = "Article",
-  { write = false, historical = false } = {},
+  { historical = false } = {},
 ) {
-  return `<p class="breadcrumb">${link("/wiki/", "Articles")} / ${link(queryLink("/wiki/", { topic: p.topic }), p.topic)}</p>${historical ? `<div class="notice warning">Earlier revision · Revision ${p.number} · ${link(`/wiki/${p.id}/`, "View current article")}</div>` : ""}<h1>${escape(p.title)}</h1><p class="lede">${escape(p.description)}</p><nav class="tabs" aria-label="Article views">${[
+  return `<p class="breadcrumb">${link("/wiki/", "Articles")} / ${link(queryLink("/wiki/", { topic: p.topic }), p.topic)}</p>${historical ? `<div class="notice warning">Earlier revision · Revision ${p.number} · ${link(`/wiki/${p.id}/`, "View current article")}</div>` : ""}<h1>${escape(p.title)}</h1><p class="lede">${escape(p.description)}</p><nav class="ui-link-tabs" aria-label="Article views">${[
     [`/wiki/${p.id}/`, "Article"],
     [`/wiki/${p.id}/history/`, "History"],
     [
@@ -278,7 +278,7 @@ export async function article(
     .filter(Boolean);
   return shell(
     p.title,
-    `<div class="layout article-layout"><div>${articleHeader(p, "Article", { write, historical: !!revision })}<div class="revision-meta"><p class="meta">Revision ${p.number} · Updated ${date(p.created_at)}</p>${write && !revision ? `<a class="edit-article" href="/wiki/${p.id}/edit/">Edit article</a>` : ""}</div>${revision ? `<nav class="actions" aria-label="Revision navigation">${p.number > 1 ? link(`/wiki/${id}/revision/${p.number - 1}/`, "Previous revision") : ""}${p.number < p.revisionCount ? link(`/wiki/${id}/revision/${p.number + 1}/`, "Next revision") : ""}${link(queryLink(`/wiki/${id}/compare/`, { from: p.number, to: p.revisionCount }), "Compare with current")}</nav>` : `<div class="notice">Latest change: ${escape(p.summary)}${p.number > 1 ? ` · ${link(queryLink(`/wiki/${id}/compare/`, { from: p.number - 1, to: p.number }), "View changes →")}` : ""}</div>`}${toc.length ? `<details class="mobile-toc"><summary>On this page</summary>${tocLinks}</details>` : ""}<article class="typeset typeset-docs">${await renderMarkdown(p.body)}${await attachmentsHTML(p.attachments || [])}${
+    `<div class="layout article-layout"><div>${articleHeader(p, "Article", { historical: !!revision })}<div class="revision-meta"><p class="meta">Revision ${p.number} · Updated ${date(p.created_at)}</p>${write && !revision ? `<a class="ui-button" href="/wiki/${p.id}/edit/">Edit article</a>` : ""}</div>${revision ? `<nav class="actions" aria-label="Revision navigation">${p.number > 1 ? link(`/wiki/${id}/revision/${p.number - 1}/`, "Previous revision") : ""}${p.number < p.revisionCount ? link(`/wiki/${id}/revision/${p.number + 1}/`, "Next revision") : ""}${link(queryLink(`/wiki/${id}/compare/`, { from: p.number, to: p.revisionCount }), "Compare with current")}</nav>` : `<div class="notice">Latest change: ${escape(p.summary)}${p.number > 1 ? ` · ${link(queryLink(`/wiki/${id}/compare/`, { from: p.number - 1, to: p.number }), "View changes →")}` : ""}</div>`}${toc.length ? `<details class="mobile-toc"><summary>On this page</summary>${tocLinks}</details>` : ""}<article class="typeset typeset-docs">${await renderMarkdown(p.body)}${await attachmentsHTML(p.attachments || [])}${
       (Array.isArray(p.evidence) ? p.evidence : []).length
         ? `<section class="article-evidence"><h2>Source passages</h2>${(Array.isArray(
             p.evidence,
