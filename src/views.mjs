@@ -21,12 +21,6 @@ const option = (value, label, selected) =>
 const empty = (text) => `<p class="empty">${e(text)}</p>`;
 const topicNames = (wiki) =>
   [...new Set(wiki.catalog().map((p) => p.topic))].sort();
-const topicSelect = (wiki, selected) =>
-  `<label>Topic<select name="topic" aria-label="Topic">${option("", "All topics", selected)}${topicNames(
-    wiki,
-  )
-    .map((t) => option(t, t, selected))
-    .join("")}</select></label>`;
 export function home(wiki, params, conversations = true) {
   const range = ["today", "week"].includes(params.get("range"))
     ? params.get("range")
@@ -100,7 +94,7 @@ export function topics(wiki, params) {
   );
 }
 function comparisonForm(id, history, from, to) {
-  return `<form class="toolbar" action="/wiki/${id}/compare/"><label>From revision<select name="from">${history.map((h) => option(String(h.number), `Revision ${h.number} · ${date(h.created_at)}`, String(from))).join("")}</select></label><label>To revision<select name="to">${history.map((h) => option(String(h.number), `Revision ${h.number} · ${date(h.created_at)}`, String(to))).join("")}</select></label><button>Compare</button></form>`;
+  return `<form class="toolbar" action="/wiki/${id}/compare/"><label class="ui-field">From revision<select name="from">${history.map((h) => option(String(h.number), `Revision ${h.number} · ${date(h.created_at)}`, String(from))).join("")}</select></label><label class="ui-field">To revision<select name="to">${history.map((h) => option(String(h.number), `Revision ${h.number} · ${date(h.created_at)}`, String(to))).join("")}</select></label><button class="ui-button" type="submit">Compare</button></form>`;
 }
 function latestKnown(wiki, id) {
   return wiki.current(id) || wiki.revision(id, wiki.history(id).at(-1)?.number);
